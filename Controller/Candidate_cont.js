@@ -2,12 +2,14 @@ const Candidate = require('../Models/Candidate');
 
 //API to Submit Candidate profile
 function Submit(req, res) {
+    console.log(req.file);
     const NewCandidate = new Candidate({
         Name: req.body.Name,
         email: req.body.email,
         Notice_Period: req.body.Notice_Period,
         Current_CTC: req.body.Current_CTC,
         Expected_CTC: req.body.Expected_CTC,
+        CV:req.file.path,
         req_id: req.params.id 
     }); 
 

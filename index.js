@@ -25,6 +25,7 @@ const Vendor=require('./Routes/Vendor_routes');
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/uploads', express.static('uploads'));
 
 //Routes
 app.use('/superadmin', SuperAdmin);

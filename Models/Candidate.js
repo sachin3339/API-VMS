@@ -24,6 +24,10 @@ const Candidate = new mongoose.Schema(
             type: String,
             required: true
         },
+        CV: {
+            type: String,
+            required: true
+        },
         req_id:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

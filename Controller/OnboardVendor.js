@@ -3,6 +3,7 @@ const User = require('../Models/User');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+//API to show Onboard the  Vendors in the system
 function onboard_vendor(req, res) {
     User.findOne({ email: req.body.User.email})
     .then(result => {
@@ -60,6 +61,47 @@ function onboard_vendor(req, res) {
     })
 }
 
+//API to show all the  Vendors in the system
+function all(req, res) {
+    Vendor.find({}).then(result=>{
+        res.status(201).json({
+            message: "All vendors retrieved Successfully",
+            post: result
+        });
+    })
+    .catch(error => {
+    
+    })
+    }
+//Api to update the Requirement
+function update(req, res) {
+    Vendor.findByIdAndUpdate(req.params.id,req.body).then(result => {
+        res.status(201).json({
+            message: "Vendor Updated Successfully",
+            post: result
+        });
+    })
+        .catch(error => {
+
+        })
+}
+//Api to destory the Requirement
+function destroy(req,res)
+{
+    Vendor.findByIdAndDelete(req.params.id).then(result=>{
+        res.status(201).json({
+            message: "Vendor deleted Successfully",
+            post: result
+        });
+    })
+    .catch(error => {
+    
+    })
+}
+
 module.exports={
-    onboard_vendor:onboard_vendor
+    onboard_vendor:onboard_vendor,
+    all:all,
+    update:update,
+    destroy:destroy
 }

@@ -3,6 +3,7 @@ const app = express();
 const dotenv=require("dotenv");
 const mongoose = require("mongoose");
 const bodyParser=require('body-parser');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ const Vendor=require('./Routes/Vendor_routes');
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use('/uploads', express.static('uploads'));
 

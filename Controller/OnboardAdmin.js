@@ -47,6 +47,47 @@ function onboard_admin(req, res) {
     })
 }
 
+//API to show the all subadmins in the system
+function all(req, res) {
+    Admin.find({}).then(result=>{
+        res.status(201).json({
+            message: "All Subadmins retrieved Successfully",
+            post: result
+        });
+    })
+    .catch(error => {
+    
+    })
+    }
+//Api to update the Admin
+function update(req, res) {
+    Admin.findByIdAndUpdate(req.params.id,req.body).then(result => {
+        res.status(201).json({
+            message: "Admin Updated Successfully",
+            post: result
+        });
+    })
+        .catch(error => {
+
+        })
+}
+//Api to destory the Requirement
+function destroy(req,res)
+{
+    Admin.findByIdAndDelete(req.params.id).then(result=>{
+        res.status(201).json({
+            message: "Admin deleted Successfully",
+            post: result
+        });
+    })
+    .catch(error => {
+    
+    })
+}
+
 module.exports={
-    onboard_admin:onboard_admin
+    onboard_admin:onboard_admin,
+    all:all,
+    update:update,
+    destroy:destroy
 }

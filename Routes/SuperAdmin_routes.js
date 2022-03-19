@@ -14,6 +14,7 @@ router.delete("/deleteadmin/:id",checkAuthMiddleware.checkAuth,OnboardAdmin.dest
 //Route for Vendors
 router.post("/onboarvendor",checkAuthMiddleware.checkAuth,OnboardVendor.onboard_vendor);
 router.get("/showvendors",checkAuthMiddleware.checkAuth,OnboardVendor.all);
+router.get("/myvendors",checkAuthMiddleware.checkAuth,OnboardVendor.myvendors);
 router.patch("/updatevendor/:id",checkAuthMiddleware.checkAuth,OnboardVendor.update);
 router.delete("/deletevendor/:id",checkAuthMiddleware.checkAuth,OnboardVendor.destroy);
 

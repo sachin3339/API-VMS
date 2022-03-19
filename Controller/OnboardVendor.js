@@ -31,7 +31,8 @@ function onboard_vendor(req, res) {
                         GST:req.body.GST,
                         PAN:req.body.PAN,
                         CNAME:req.body.CNAME,
-                        Aadhar:req.body.Aadhar
+                        Aadhar:req.body.Aadhar,
+                        Created_by: req.userdata.email
                     }); 
 
                     newven.save().then(result => {
@@ -73,6 +74,19 @@ function all(req, res) {
     
     })
     }
+
+//API to show the  Vendors created by respective admins
+function myvendors(req, res) {
+    Vendor.find({ Created_by: req.userdata.email}).then(result=>{
+        res.status(201).json({
+            message: "My vendors retrieved Successfully",
+            post: result
+        });
+    })
+    .catch(error => {
+    
+    })
+    }
 //Api to update the Requirement
 function update(req, res) {
     Vendor.findByIdAndUpdate(req.params.id,req.body).then(result => {
@@ -103,5 +117,6 @@ module.exports={
     onboard_vendor:onboard_vendor,
     all:all,
     update:update,
-    destroy:destroy
+    destroy:destroy,
+    myvendors:myvendors
 }

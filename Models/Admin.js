@@ -1,31 +1,18 @@
 const mongoose = require("mongoose");
+var Schema=mongoose.Schema;
+const User = require('./User');
 
 const AdminSchema = new mongoose.Schema(
   {
-    username: {
+    EMP_ID: {
       type: String,
       required: true,
       unique: true,
     },
-    email: {
+    User: { type: Schema.Types.ObjectId, ref: 'User' },
+    Reporting_Manager: {
       type: String,
       required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    role: {
-        type: String,
-        required: true,
-      },
-      mobile: {
-        type: String,
-      },
-    profilePic: {
-      type: String,
-      default: "",
     },
   },
   { timestamps: true }

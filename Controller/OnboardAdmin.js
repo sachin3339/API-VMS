@@ -1,29 +1,40 @@
 const Admin = require('../Models/Admin');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../Models/User');
+
 
 function onboard_admin(req, res) {
-    Admin.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.User.email})
     .then(result => {
+        console.log(req.body.User.email);
         if (result) {
             res.status(409).json({
-                message: "Admin Already exist with this email",
+                message: "Vendor Already exist with this email",
             });
         }
-        else {
+        else { 
             bcryptjs.genSalt(10, function (err, salt) {
-                bcryptjs.hash(req.body.password, salt, function (err, hash) {
+                bcryptjs.hash(req.body.User.password, salt, function (err, hash) {
+
+                    const newadm=new User({
+                        username:req.body.User.username,
+                        email: req.body.User.email,
+                        mobile:req.body.User.mobile,
+                        role: req.body.User.role,
+                        password: hash
+                    })
 
                     const newuser = new Admin({
-                        username: req.body.username,
-                        email: req.body.email,
-                        role: req.body.role,
-                        password: hash
+                        EMP_ID:req.body.EMP_ID,
+                        Reporting_Manager: req.body.Reporting_Manager,
+                        User: newadm
                     }); 
 
-                    newuser.save().then(result => {
+                    newadm.save().then(result => {
+                        newuser.save()
                         res.status(201).json({
-                            message: "Admin Created Successfully",
+                            message: "Admin Onboarded Successfully",
                             post: result
                         });
                     })

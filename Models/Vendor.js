@@ -42,11 +42,7 @@ const Vendor = new mongoose.Schema(
       },
       Account_Number: {
         type: String,
-      },
-      Created_by: {
-        type:String,
-        unique: false
-       }
+      }
   },
   { timestamps: true }
 );

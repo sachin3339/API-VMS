@@ -17,17 +17,21 @@ const User = new mongoose.Schema(
       required: true,
     },
     role: {
-        type: String,
-        required: true,
-      },
-      mobile: {
-        type: String,
-      },
-    emailToken:{
-      type:String 
+      type: String,
+      required: true,
     },
-    Isverified:{
-      type:Boolean
+    mobile: {
+      type: String,
+    },
+    emailToken: {
+      type: String
+    },
+    Isverified: {
+      type: Boolean
+    },
+    Created_by: {
+      type: String,
+      unique: false
     },
     profilePic: {
       type: String,

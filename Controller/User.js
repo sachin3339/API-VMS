@@ -15,6 +15,7 @@ function signup(req, res) {
                 });
             }
             else {
+                const orgpass=req.body.password
                 bcryptjs.genSalt(10, function (err, salt) {
                     bcryptjs.hash(req.body.password, salt, function (err, hash) {
                         // create reusable transporter object using the default SMTP transport
@@ -42,10 +43,15 @@ function signup(req, res) {
                         // send mail with defined transport object
                         let info = transporter.sendMail({
                             from: '"Verify your email👻" <sachin.diwakar@alchemyinfotech.com>', // sender address
-                            to: "sachindiwakar3339@gmail.com", // list of receivers
+                            to: newuser.email, // list of receivers
                             subject: "Alchemy Solutions: Verify your email ✔", // Subject line
                             html: `<h2> Hi, ${req.body.username}! You have been onboarded as ${req.body.role}
+                            <h4>You can login using below credentials:</h4>
+                            <p>Username:${req.body.username}</p>
+                            <p>Password:${orgpass}</p>
+                            
                             <h4>Please verify your email to continue...</h4>
+
                             <a href="http://${req.headers.host}/user/verify-email?token=${newuser.emailToken}">Verify your Email</a>
                             `, // html body
                         });
@@ -123,8 +129,33 @@ function login(req, res) {
 
 }
 
+function verifyemail(req,res)
+{
+    
+        const emailToken=req.query.token;
+        User.findOne({ emailToken: emailToken })
+        .then(user => {
+            if (user === null) {
+                res.status(401).json({
+                    message: "Invalid Token or Token expired",
+                });
+            }
+
+            else {
+              user.emailToken=null
+              user.Isverified=true
+              user.save()
+              res.status(200).json({
+                message: "Email Successfully Verified",
+            });
+            }
+    })
+
+    
+}
 
 module.exports = {
     signup: signup,
-    login: login
+    login: login,
+    verifyemail:verifyemail
 }

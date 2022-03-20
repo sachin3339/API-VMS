@@ -23,6 +23,12 @@ const User = new mongoose.Schema(
       mobile: {
         type: String,
       },
+    emailToken:{
+      type:String 
+    },
+    Isverified:{
+      type:Boolean
+    },
     profilePic: {
       type: String,
       default: "",

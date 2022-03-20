@@ -64,7 +64,7 @@ function onboard_vendor(req, res) {
 
 //API to show all the  Vendors in the system
 function all(req, res) {
-    Vendor.find({}).then(result=>{
+    Vendor.find({}).populate("User").then(result=>{
         res.status(201).json({
             message: "All vendors retrieved Successfully",
             post: result
@@ -77,7 +77,7 @@ function all(req, res) {
 
 //API to show the  Vendors created by respective admins
 function myvendors(req, res) {
-    Vendor.find({ Created_by: req.userdata.email}).then(result=>{
+    Vendor.find({ Created_by: req.userdata.email}).populate("User").then(result=>{
         res.status(201).json({
             message: "My vendors retrieved Successfully",
             post: result

@@ -1,10 +1,6 @@
 const User = require('../Models/User');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer')
-
-
 
 function signup(req, res) {
     User.findOne({ email: req.body.email })
@@ -18,19 +14,7 @@ function signup(req, res) {
                 const orgpass=req.body.password
                 bcryptjs.genSalt(10, function (err, salt) {
                     bcryptjs.hash(req.body.password, salt, function (err, hash) {
-                        // create reusable transporter object using the default SMTP transport
-                        let transporter = nodemailer.createTransport({
-                            host: 'smtp.office365.com',
-                            port: 587,
-                            secure: false, // true for 465, false for other ports
-                            auth: {
-                                user: 'sachin.diwakar@alchemyinfotech.com', // generated ethereal user
-                                pass: 'P@ssword@123', // generated ethereal password
-                            },
-                            tls: {
-                                ciphers: 'SSLv3'
-                            }
-                        });
+                       
 
                         const newuser = new User({
                             username: req.body.username,
@@ -40,28 +24,10 @@ function signup(req, res) {
                             Isverified: false,
                             password: hash
                         });
-                        // send mail with defined transport object
-                        let info = transporter.sendMail({
-                            from: '"Verify your email👻" <sachin.diwakar@alchemyinfotech.com>', // sender address
-                            to: newuser.email, // list of receivers
-                            subject: "Alchemy Solutions: Verify your email ✔", // Subject line
-                            html: `<h2> Hi, ${req.body.username}! You have been onboarded as ${req.body.role}
-                            <h4>You can login using below credentials:</h4>
-                            <p>Username:${req.body.username}</p>
-                            <p>Password:${orgpass}</p>
-                            
-                            <h4>Please verify your email to continue...</h4>
-
-                            <a href="http://${req.headers.host}/user/verify-email?token=${newuser.emailToken}">Verify your Email</a>
-                            `, // html body
-                        });
+                       
 
                         newuser.save().then(result => {
-                            transporter.sendMail(info, function (error, info) {
-                                if (error)
-                                    console.log(error)
-
-                            })
+                           
                             res.status(201).json({
                                 message: "User Signed Up Successfully Please verify your email",
                                 post: result

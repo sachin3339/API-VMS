@@ -6,7 +6,6 @@ try{
     const decodedToken = jwt.verify(token,process.env.JWT_KEY);
     req.userdata = decodedToken;
     next();
-
 }
 catch(e){
     return res.status(401).json({

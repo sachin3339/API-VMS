@@ -42,7 +42,10 @@ const Vendor = new mongoose.Schema(
       },
       Account_Number: {
         type: String,
-      }
+      },
+      emailToken: {
+        type: String
+      },
   },
   { timestamps: true }
 );

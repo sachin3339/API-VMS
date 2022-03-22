@@ -2,6 +2,8 @@ const Admin = require('../Models/Admin');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/User');
+const crypto = require('crypto');
+const {transporter}= require('../Helpers/Transporter')
 
 
 function onboard_admin(req, res) {
@@ -22,7 +24,10 @@ function onboard_admin(req, res) {
                         email: req.body.User.email,
                         mobile:req.body.User.mobile,
                         role: req.body.User.role,
-                        password: hash
+                        password: hash,
+                        emailToken: crypto.randomBytes(64).toString('hex'),
+                        Isverified: false,
+                        Created_by:req.userdata.username
                     })
 
                     const newuser = new Admin({
@@ -30,11 +35,26 @@ function onboard_admin(req, res) {
                         Reporting_Manager: req.body.Reporting_Manager,
                         User: newadm
                     }); 
+                     // send mail with defined transport object
+                     let info = transporter.sendMail({
+                        from: '"Verify your email👻" <sachin.diwakar@alchemyinfotech.com>', // sender address
+                        to: newadm.email, // list of receivers
+                        subject: "Alchemy Solutions: Verify your email ✔", // Subject line
+                        html: `<h2> Hi, ${newadm.username}! You have been onboarded as ${newadm.role} by ${newadm.Created_by}
+                    <h4>You can login using below credentials:</h4>
+                    <p>Username:${newadm.username}</p>
+                    <p>Password:${req.body.User.password}</p>
+                    
+                    <h4>Please verify your email to continue...</h4> 
+
+                    <a href="http://${req.headers.host}/user/verify-email?token=${newadm.emailToken}">Verify your Email</a>
+                    `, // html body
+                    });
 
                     newadm.save().then(result => {
                         newuser.save()
                         res.status(201).json({
-                            message: "Admin Onboarded Successfully",
+                            message: "Admin Onboarded Successfully, Please verify you email.",
                             post: result
                         });
                     })

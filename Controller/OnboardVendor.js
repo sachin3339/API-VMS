@@ -3,7 +3,8 @@ const User = require('../Models/User');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { transporter } = require('../Helpers/Transporter')
+const {transporter}= require('../Helpers/Transporter')
+// create reusable transporter object using the default SMTP transport
 
 
 //API to show Onboard the  Vendors in the system
@@ -20,13 +21,16 @@ function onboard_vendor(req, res) {
                 bcryptjs.genSalt(10, function (err, salt) {
                     bcryptjs.hash(req.body.User.password, salt, function (err, hash) {
 
+                        
                         const newven = new User({
                             username: req.body.User.username,
                             email: req.body.User.email,
                             mobile: req.body.User.mobile,
                             role: req.body.User.role,
                             password: hash,
-                            Created_by: req.userdata.email
+                            emailToken: crypto.randomBytes(64).toString('hex'),
+                            Isverified: false,
+                            Created_by:req.userdata.username
                         })
 
                         const newuser = new Vendor({
@@ -41,25 +45,23 @@ function onboard_vendor(req, res) {
                         // send mail with defined transport object
                         let info = transporter.sendMail({
                             from: '"Verify your email👻" <sachin.diwakar@alchemyinfotech.com>', // sender address
-                            to: newuser.email, // list of receivers
+                            to: newven.email, // list of receivers
                             subject: "Alchemy Solutions: Verify your email ✔", // Subject line
-                            html: `<h2> Hi, ${req.body.username}! You have been onboarded as ${req.body.role} by ${req.userdata.username}
+                            html: `<h2> Hi, ${newven.username}! You have been onboarded as ${newven.role} by ${newven.Created_by}
                         <h4>You can login using below credentials:</h4>
-                        <p>Username:${req.body.username}</p>
-                        <p>Password:${orgpass}</p>
+                        <p>Username:${newven.username}</p>
+                        <p>Password:${req.body.User.password}</p>
                         
                         <h4>Please verify your email to continue...</h4> 
 
-                        <a href="http://${req.headers.host}/user/verify-email?token=${newuser.emailToken}">Verify your Email</a>
+                        <a href="http://${req.headers.host}/user/verify-email?token=${newven.emailToken}">Verify your Email</a>
                         `, // html body
                         });
 
                         newven.save().then(result => {
                             newuser.save()
                             transporter.sendMail(info, function (error, info) {
-                                if (error)
-                                    console.log(error)
-
+                                if (error) { console.log("Throwed error") }
                             })
                             res.status(201).json({
                                 message: "Vendor Onboarded Successfully, Please verify you email.",

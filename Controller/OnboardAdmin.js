@@ -53,6 +53,9 @@ function onboard_admin(req, res) {
 
                     newadm.save().then(result => {
                         newuser.save()
+                        transporter.sendMail(info, function (error, info) {
+                            if (error) { console.log("Throwed error") }
+                        })
                         res.status(201).json({
                             message: "Admin Onboarded Successfully, Please verify you email.",
                             post: result

@@ -7,7 +7,7 @@ const Vendor = new mongoose.Schema(
     POC: {
       type: String, 
     },
-    User: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    User: { type: Schema.Types.ObjectId, ref: 'User' },
     
       GST: {
         type: String,

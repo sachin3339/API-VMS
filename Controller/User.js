@@ -1,6 +1,7 @@
 const User = require('../Models/User');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 function signup(req, res) {
     User.findOne({ email: req.body.email })

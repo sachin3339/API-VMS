@@ -82,8 +82,8 @@ function onboard_admin(req, res) {
 }
 
 //API to show the all subadmins in the system
-function all(req, res) {
-    Admin.find({}).then(result=>{
+function all(req, res) { 
+    Admin.find({}).populate("User").then(result=>{
         res.status(201).json({
             message: "All Subadmins retrieved Successfully",
             post: result

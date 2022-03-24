@@ -2,7 +2,7 @@ const Admin = require('../Models/Admin');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/User');
-const crypto = require('crypto');
+const crypto = require('crypto'); 
 const {transporter}= require('../Helpers/Transporter')
 
 

@@ -3,7 +3,7 @@ const OnboardCandidate=require('../Controller/Candidate_cont');
 const checkAuthMiddleware=require('../Middleware/check-auth')
 const cvuploader=require('../Helpers/Pdf-Uploader');
 const router=express.Router();
-router.use(express.json());
+router.use(express.json()); 
 
 router.post("/submit/:id",checkAuthMiddleware.checkAuth, cvuploader.upload.single('CV'),OnboardCandidate.Submit);
 router.get("/show/:id",checkAuthMiddleware.checkAuth,OnboardCandidate.Show);

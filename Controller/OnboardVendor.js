@@ -3,15 +3,18 @@ const User = require('../Models/User');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const {transporter}= require('../Helpers/Transporter')
+const { transporter } = require('../Helpers/Transporter')
 // create reusable transporter object using the default SMTP transport
 
 
 //API to show Onboard the  Vendors in the system
 function onboard_vendor(req, res) {
+
+    console.log(req.files);
+    console.log(req.body)
     User.findOne({ email: req.body.User.email })
         .then(result => {
-            console.log(req.body.User.email);
+
             if (result) {
                 res.status(409).json({
                     message: "Vendor Already exist with this email",
@@ -21,7 +24,6 @@ function onboard_vendor(req, res) {
                 bcryptjs.genSalt(10, function (err, salt) {
                     bcryptjs.hash(req.body.User.password, salt, function (err, hash) {
 
-                        
                         const newven = new User({
                             username: req.body.User.username,
                             email: req.body.User.email,
@@ -30,8 +32,9 @@ function onboard_vendor(req, res) {
                             password: hash,
                             emailToken: crypto.randomBytes(64).toString('hex'),
                             Isverified: false,
-                            Created_by:req.userdata.username
+                            Created_by: req.userdata.username
                         })
+                    // need to check for if file is null
 
                         const newuser = new Vendor({
                             POC: req.body.POC,
@@ -39,9 +42,21 @@ function onboard_vendor(req, res) {
                             GST: req.body.GST,
                             PAN: req.body.PAN,
                             CNAME: req.body.CNAME,
-                            Aadhar: req.body.Aadhar
+                            Aadhar: req.body.Aadhar,
+                            ESIC_CAL: req.files['ESIC_CAL'][0].path,
+                            PF_CAL: req.files['PF_CAL'][0].path,
+                            PF_CHALLAN: req.files['PF_CHALLAN'][0].path,
+                            ESIC_CHALLAN: req.files['ESIC_CHALLAN'][0].path,
+                            PT_RC: req.files['PT_RC'][0].path,
+                            AUDIT_SHEET: req.files['AUDIT_SHEET'][0].path,
+                            FORM_5A: req.files['FORM_5A'][0].path,
+                            ESTABLISHMENT_CA: req.files['ESTABLISHMENT_CA'][0].path,
+                            DSC: req.files['DSC'][0].path,
+                            COI: req.files['COI'][0].path,
+                            GST_CERT: req.files['GST_CERT'][0].path,
+                            LWF: req.files['LWF'][0].path
                         });
-
+                        console.log(req.files['ESIC_CAL'][0].path);
                         // send mail with defined transport object
                         let info = transporter.sendMail({
                             from: '"Verify your email👻" <sachin.diwakar@alchemyinfotech.com>', // sender address
@@ -58,8 +73,10 @@ function onboard_vendor(req, res) {
                         `, // html body
                         });
 
+
                         newven.save().then(result => {
                             newuser.save()
+
                             transporter.sendMail(info, function (error, info) {
                                 if (error) { console.log("Throwed error") }
                             })
@@ -100,7 +117,19 @@ function all(req, res) {
 
         })
 }
-
+//API to show the Vendor by ID
+function Show(req, res) {
+    Vendor.find({_id:req.params.id}).populate("Requirement").then(result=>{
+        res.status(201).json({
+            message: "Vendor retrieved Successfully",
+            post: result
+        });
+    })
+    .catch(error => {
+    
+    })
+    }
+    
 //API to show the  Vendors created by respective admins
 function myvendors(req, res) {
     Vendor.find({ Created_by: req.userdata.email }).populate("User").then(result => {
@@ -138,10 +167,12 @@ function destroy(req, res) {
         })
 }
 
+
 module.exports = {
     onboard_vendor: onboard_vendor,
     all: all,
     update: update,
     destroy: destroy,
-    myvendors: myvendors
+    myvendors: myvendors,
+    Show:Show
 }

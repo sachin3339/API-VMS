@@ -43,18 +43,18 @@ function onboard_vendor(req, res) {
                             PAN: req.body.PAN,
                             CNAME: req.body.CNAME,
                             Aadhar: req.body.Aadhar,
-                            ESIC_CAL: req.files['ESIC_CAL'][0].path,
-                            PF_CAL: req.files['PF_CAL'][0].path,
-                            PF_CHALLAN: req.files['PF_CHALLAN'][0].path,
-                            ESIC_CHALLAN: req.files['ESIC_CHALLAN'][0].path,
-                            PT_RC: req.files['PT_RC'][0].path,
-                            AUDIT_SHEET: req.files['AUDIT_SHEET'][0].path,
-                            FORM_5A: req.files['FORM_5A'][0].path,
-                            ESTABLISHMENT_CA: req.files['ESTABLISHMENT_CA'][0].path,
-                            DSC: req.files['DSC'][0].path,
-                            COI: req.files['COI'][0].path,
-                            GST_CERT: req.files['GST_CERT'][0].path,
-                            LWF: req.files['LWF'][0].path
+                            ESIC_CAL: (req.files['ESIC_CAL']?req.files['ESIC_CAL'][0].path:""),
+                            PF_CAL: (req.files['PF_CAL']?req.files['PF_CAL'][0].path:""),
+                            PF_CHALLAN: (req.files['PF_CHALLAN']?req.files['PF_CHALLAN'][0].path:""),
+                            ESIC_CHALLAN: (req.files['ESIC_CHALLAN']?req.files['ESIC_CHALLAN'][0].path:""),
+                            PT_RC: (req.files['PT_RC']?files['PT_RC'][0].path:""),
+                            AUDIT_SHEET: (req.files['AUDIT_SHEET']?req.files['AUDIT_SHEET'][0].path:""),
+                            FORM_5A: (req.files['FORM_5A']?req.files['FORM_5A'][0].path:""),
+                            ESTABLISHMENT_CA: (req.files['ESTABLISHMENT_CA']?req.files['ESTABLISHMENT_CA'][0].path:""),
+                            DSC: (req.files['DSC']?req.files['DSC'][0].path:""),
+                            COI: (req.files['COI']?req.files['COI'][0].path:""),
+                            GST_CERT: (req.files['GST_CERT']?req.files['GST_CERT'][0].path:""),
+                            LWF: (req.files['LWF']?req.files['LWF'][0].path:"")
                         });
                         console.log(req.files['ESIC_CAL'][0].path);
                         // send mail with defined transport object

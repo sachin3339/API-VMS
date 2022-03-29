@@ -6,7 +6,9 @@ const crypto = require('crypto');
 function signup(req, res) {
     User.findOne({ email: req.body.email })
         .then(result => {
+          
             if (result) {
+               
                 res.status(409).json({
                     message: "Account Already exist with this email",
                 });
@@ -21,6 +23,7 @@ function signup(req, res) {
                             username: req.body.username,
                             email: req.body.email,
                             role: req.body.role,
+                            mobile:req.body.mobile,
                             emailToken: crypto.randomBytes(64).toString('hex'),
                             Isverified: false,
                             password: hash
@@ -58,6 +61,8 @@ function signup(req, res) {
 function login(req, res) {
     User.findOne({ email: req.body.email })
         .then(user => {
+            console.log(user._id)
+          
             if (user === null) {
                 res.status(401).json({
                     message: "Invalid Credentials",
@@ -67,10 +72,12 @@ function login(req, res) {
             else {
                 bcryptjs.compare(req.body.password, user.password, function (error, result) {
                     if (result) {
+                       
                         const token = jwt.sign({
                             email: user.email,
                             username: user.username,
-                            role: user.role
+                            role: user.role,
+                            _id:user._id
                         }, process.env.JWT_KEY, function (err, token) {
                             res.status(200).json({
                                 message: "Authentication Successfull",

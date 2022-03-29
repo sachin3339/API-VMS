@@ -142,7 +142,7 @@ function myvendors(req, res) {
 
         })
 }
-//Api to update the Requirement
+//Api to update the Vendor
 function update(req, res) {
     Vendor.findByIdAndUpdate(req.params.id, req.body).then(result => {
         res.status(201).json({
@@ -154,7 +154,7 @@ function update(req, res) {
 
         })
 }
-//Api to destory the Requirement
+//Api to destory the Vendor
 function destroy(req, res) {
     Vendor.findByIdAndDelete(req.params.id).then(result => {
         res.status(201).json({

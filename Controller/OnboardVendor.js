@@ -144,13 +144,9 @@ function myvendors(req, res) {
 }
 //Api to update the Vendor
 function update(req, res) {
+
     console.log(req.files);
     const newuser = {
-        POC: req.body.POC,
-        GST: req.body.GST,
-        PAN: req.body.PAN,
-        CNAME: req.body.CNAME,
-        Aadhar: req.body.Aadhar,
         ESIC_CAL: (req.files['ESIC_CAL']?req.files['ESIC_CAL'][0].path:""),
         PF_CAL: (req.files['PF_CAL']?req.files['PF_CAL'][0].path:""),
         PF_CHALLAN: (req.files['PF_CHALLAN']?req.files['PF_CHALLAN'][0].path:""),
@@ -165,7 +161,21 @@ function update(req, res) {
         LWF: (req.files['LWF']?req.files['LWF'][0].path:"")
     };
 
-    Vendor.findByIdAndUpdate(req.params.id,newuser).then(result => {
+    Vendor.findOneAndUpdate({email:req.params.email},newuser).then(result => {
+        res.status(201).json({
+            message: "Vendor Updated Successfully",
+            post: result
+        });
+    })
+        .catch(error => {
+
+        })
+}
+
+
+
+function update_body(req, res) {
+    Vendor.findByIdAndUpdate(req.params.id,req.body).then(result => {
         res.status(201).json({
             message: "Vendor Updated Successfully",
             post: result
@@ -195,5 +205,6 @@ module.exports = {
     update: update,
     destroy: destroy,
     myvendors: myvendors,
-    Show:Show
+    Show:Show,
+    update_body:update_body
 }

@@ -97,6 +97,10 @@ const Vendor = new mongoose.Schema(
       IsApproved: {
         type: Boolean,
         default:false
+      }, 
+      Comment: {
+        type: String,
+        default:"Documents are yet to be uploaded"
       },
       Requirement:[{
         type: mongoose.Schema.Types.ObjectId,

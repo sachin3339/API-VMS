@@ -104,6 +104,38 @@ function all(req, res) {
 
         })
 }
+
+function showvendorsdocuments(req, res) {
+    
+    let arrayDocuments = [];
+    let obj = {
+        "AUDIT_SHEET": "AUDIT_SHEET", 
+        "COI": "COI", 
+        "DSC": "DSC", 
+        "ESIC_CAL": "ESIC_CAL", 
+        "ESIC_CHALLAN": "ESIC_CHALLAN", 
+        "ESTABLISHMENT_CA": "ESTABLISHMENT_CA", 
+        "FORM_5A": "FORM_5A", 
+        "GST_CERT": "GST_CERT", 
+        "LWF": "LWF", 
+        "PF_CAL": "PF_CAL", 
+        "PF_CHALLAN": "PF_CHALLAN", 
+        "PT_RC": "PT_RC"
+    }
+    arrayDocuments.push(obj);
+    Vendor.find({}).select("ESIC_CAL ESIC_CHALLAN PF_CAL PF_CHALLAN PT_RC AUDIT_SHEET FORM_5A ESTABLISHMENT_CA DSC COI GST_CERT LWF").then(result => {
+        
+        
+      res.status(201).json({
+           result,
+           arrayDocuments
+      });
+  })
+      .catch(error => {
+
+      })
+}
+
 //API to show the Vendor by ID
 function Show(req, res) {
     Vendor.find({_id:req.params.id}).populate("Requirement").then(result=>{
@@ -192,5 +224,6 @@ module.exports = {
     destroy: destroy,
     myvendors: myvendors,
     Show:Show,
-    update_body:update_body
+    update_body:update_body,
+    showvendorsdocuments: showvendorsdocuments
 }

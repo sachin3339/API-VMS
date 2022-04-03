@@ -17,7 +17,7 @@ router.post("/onboarvendor",checkAuthMiddleware.checkAuth,cvuploader.upload.fiel
 router.get("/showvendors",checkAuthMiddleware.checkAuth,OnboardVendor.all);
 router.get("/myvendors",checkAuthMiddleware.checkAuth,OnboardVendor.myvendors);
 router.get("/show/:id",checkAuthMiddleware.checkAuth,OnboardVendor.Show);
-router.patch("/updatevendor/:email",checkAuthMiddleware.checkAuth,cvuploader.upload.fields([{ name: 'ESIC_CAL', maxCount: 1 }, { name: 'PF_CAL', maxCount: 1 },{ name: 'PF_CHALLAN', maxCount: 1 },{ name: 'ESIC_CHALLAN', maxCount: 1 },{ name: 'PT_RC', maxCount: 1 },{ name: 'AUDIT_SHEET', maxCount: 1 },{ name: 'FORM_5A', maxCount: 1 },{ name: 'ESTABLISHMENT_CA', maxCount: 1 },{ name: 'DSC', maxCount: 1 },{ name: 'COI', maxCount: 1 },{ name: 'GST_CERT', maxCount: 1 },{ name: 'LWF', maxCount: 1 }]),OnboardVendor.update);
+router.patch("/updatevendor/:id",checkAuthMiddleware.checkAuth,cvuploader.upload.fields([{ name: 'ESIC_CAL', maxCount: 1 }, { name: 'PF_CAL', maxCount: 1 },{ name: 'PF_CHALLAN', maxCount: 1 },{ name: 'ESIC_CHALLAN', maxCount: 1 },{ name: 'PT_RC', maxCount: 1 },{ name: 'AUDIT_SHEET', maxCount: 1 },{ name: 'FORM_5A', maxCount: 1 },{ name: 'ESTABLISHMENT_CA', maxCount: 1 },{ name: 'DSC', maxCount: 1 },{ name: 'COI', maxCount: 1 },{ name: 'GST_CERT', maxCount: 1 },{ name: 'LWF', maxCount: 1 }]),OnboardVendor.update);
 router.patch("/approve/:id",checkAuthMiddleware.checkAuth,OnboardVendor.update_body);
 router.delete("/deletevendor/:id",checkAuthMiddleware.checkAuth,OnboardVendor.destroy);
 router.get("/showvendorsdocuments",checkAuthMiddleware.checkAuth,OnboardVendor.showvendorsdocuments);

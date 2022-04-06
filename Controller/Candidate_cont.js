@@ -25,7 +25,7 @@ function Submit(req, res) {
   
 }
  
-//API to Display profiles by Requirement ID
+//API to Display profiles by vendor ID
 function Show(req, res) {
     console.log(req.params.id)
     Candidate.find({req_id:req.params.id}).then(result=>{

@@ -1,6 +1,7 @@
 const Requirement = require('../Models/Requirement');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Candidate = require('../Models/Candidate');
 
 //API to Create the requirement
 function create(req, res) {
@@ -29,7 +30,26 @@ function create(req, res) {
 
 //API to show the requirement by ID
 function Show(req, res) {
-Requirement.find({_id:req.query.id}).then(result=>{
+    Requirement.find({_id:req.params.id}).populate('Candidate').then(result=>{
+        res.status(201).json({
+            message: "Requirement retrieved Successfully",
+            post: result
+        });
+    })
+    .catch(error => {
+    
+    })
+    }
+
+//API to show the candidate mapped to any requirement(ID) by any vendor (ID)
+
+// /requirement id/vendor id
+
+function Mycandidate(req, res) {
+Requirement.find({_id:req.params.id}).populate({
+    path: 'Candidate',
+    match: {req_id:req.params.req_id},
+}).then(result=>{
     res.status(201).json({
         message: "Requirement retrieved Successfully",
         post: result
@@ -84,5 +104,7 @@ module.exports={
     Show:Show,
     all:all,
     update:update,
-    destroy:destroy
+    destroy:destroy,
+    Mycandidate:Mycandidate
+    
 }

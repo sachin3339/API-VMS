@@ -180,7 +180,7 @@ function update(req, res) {
         LWF: (req.files['LWF']?req.files['LWF'][0].path:"")
     };
 
-    Vendor.findOneAndUpdate({_id:req.params.id},newuser).then(result => {
+    Vendor.findOneAndUpdate({User:req.params.id},newuser).then(result => {
         res.status(201).json({
             message: "Vendor Updated Successfully",
             post: result
